@@ -7,15 +7,14 @@ const groq = new Groq({
 });
 
 export const getChat = async (content) => {
-  const response = await groq.chat.completions.create({
-    messages: [
-      {
-        role: "user",
-        content: content,
-      },
-    ],
-    model: "llama3-8b-8192",
-    max_tokens: 150,
-  });
-  return response.choices[0].message.content;
+  try {
+    const response = await groq.chat.completions.create({
+      messages: [{ role: "user", content }],
+      model: "llama3-8b-8192",
+      max_tokens: 150,
+    });
+    return response.choices[0].message.content;
+  } catch (error) {
+    console.error("Error creating chat completion:", error);
+  }
 };
