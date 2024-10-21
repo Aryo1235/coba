@@ -109,7 +109,7 @@ const ChatBot = () => {
           {/* Chat Area */}
           <div className="bg-white w-full md:w-3/4 p-6 rounded-lg shadow-lg flex flex-col">
             <h1 className="text-4xl mb-4 text-center text-yellow-500">
-              Groq ChatBot
+              Groq ChatBot taiii
             </h1>
 
             {/* Tombol "New Chat" */}
