@@ -1,0 +1,57 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "user1",
+      "password": "password1",
+      "token": "1234567890abcdef"
+    },
+    {
+      "id": "2",
+      "username": "user2",
+      "password": "password2",
+      "token": "abcdef1234567890"
+    },
+    {
+      "id": "3",
+      "username": "dasdas",
+      "password": "sadas",
+      "token": "xyz1234567890abc"
+    },
+    {
+      "id": "c591",
+      "username": "dsad",
+      "password": "asdasd"
+    },
+    {
+      "id": "35ad",
+      "username": "dsadasda",
+      "password": "dasdasdasd"
+    },
+    {
+      "id": "608b",
+      "username": "dsadasda",
+      "password": "dasdasdasd"
+    },
+    {
+      "id": "b89d",
+      "username": "dsadasda",
+      "password": "dasdasdasd"
+    },
+    {
+      "id": "f0a9",
+      "username": "dsadasda",
+      "password": "dasdasdasd"
+    },
+    {
+      "id": "49aa",
+      "username": "dsadasda",
+      "password": "dasdasdasd"
+    },
+    {
+      "id": "088f",
+      "username": "",
+      "password": ""
+    }
+  ]
+}
