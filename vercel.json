@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/main.jsx",
+      "use": "@vercel/react"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/((?!api).*)",
+      "dest": "/index.html"
+    }
+  ]
+}

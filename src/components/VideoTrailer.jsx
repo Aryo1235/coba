@@ -14,7 +14,7 @@ const VideoTrailer = ({ movieId }) => {
           (video) => video.type === "Trailer" && video.site === "YouTube"
         );
         setTrailer(trailerVideo[0]); // Simpan trailer pertama
-        console.log(trailerVideo[0]); // Debug key
+        console.log(trailerVideo[0]);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
