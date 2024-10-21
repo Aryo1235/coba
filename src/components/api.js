@@ -3,7 +3,6 @@ import axios from "axios";
 const api_key = import.meta.env.VITE_API_KEY;
 const apiBaseURL = import.meta.env.VITE_API_BASE_URL;
 const imageBaseURL = import.meta.env.VITE_IMAGE_BASE_URL;
-
 const apiLogin = import.meta.env.VITE_LOGIN;
 
 // Fetch data from server using Axios
@@ -87,8 +86,6 @@ const getMovieReviews = (id) => {
   const url = `${apiBaseURL}/movie/${id}/reviews?api_key=${api_key}&language=en-US&page=1`;
   return fetchDataFromServer(url);
 };
-
-// api.js
 
 // Ganti dengan URL dari Mock.IO
 

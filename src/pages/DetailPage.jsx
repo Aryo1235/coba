@@ -30,7 +30,6 @@ function DetailPages() {
 
   const handleRatingSubmit = (rating) => {
     console.log("Submitted Rating:", rating);
-    // Simpan rating di localStorage atau lakukan aksi lain
   };
 
   if (loading) return <p className="text-center">Loading...</p>;
