@@ -11,6 +11,9 @@ const ChatBot = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false); // State untuk mengontrol tampilan sidebar
   const [activeHistoryIndex, setActiveHistoryIndex] = useState(null); // Melacak index dari history yang sedang aktif
   const inputRef = useRef(null);
+  console.log("Data:", data);
+  console.log("Input:", input);
+  console.log("History:", history);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
