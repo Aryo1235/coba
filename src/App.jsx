@@ -10,6 +10,7 @@ import Register from "./components/Register";
 
 import ChatBot from "./components/ChatBot";
 import AiQueryComponent from "./components/aiFlawise";
+import GeminiAi from "./components/GeminiAi";
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Homepages />} />
         <Route path="/chat" element={<ChatBot />} />
-        <Route path="/chatai" element={<AiQueryComponent />} />
+        <Route path="/chatai" element={<GeminiAi />} />
         <Route path="/genre" element={<GenrePages />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<Register />} />

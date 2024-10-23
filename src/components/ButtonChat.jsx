@@ -16,7 +16,7 @@ const ButtonChat = () => {
       return;
     } else {
       // Jika user sudah login, arahkan ke halaman ChatBot
-      navigate("/chat");
+      navigate("/chatai");
     }
   };
 
