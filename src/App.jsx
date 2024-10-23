@@ -9,7 +9,7 @@ import LoginForm from "./components/Login";
 import Register from "./components/Register";
 
 import ChatBot from "./components/ChatBot";
-import AiQueryComponent from "./components/aiFlawise";
+
 import GeminiAi from "./components/GeminiAi";
 
 const App = () => {
