@@ -18,6 +18,7 @@ function Homepages() {
             {/* HeroSection lebih kecil */}
             <HeroSection />
             <MovieList />
+            <aiFlawise />
           </div>
         </div>
       </div>

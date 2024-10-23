@@ -16,6 +16,7 @@ function ResultsPage() {
 
         <SearchResultsPages />
       </div>
+      <aiFlawise />
     </>
   );
 }
