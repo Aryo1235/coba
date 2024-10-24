@@ -19,6 +19,7 @@ const App = () => {
         <Route path="/" element={<Homepages />} />
         <Route path="/chat" element={<ChatBot />} />
         <Route path="/chatai" element={<GeminiAi />} />
+
         <Route path="/genre" element={<GenrePages />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<Register />} />

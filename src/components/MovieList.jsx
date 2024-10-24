@@ -14,7 +14,7 @@ const MovieList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  console.log(topRatingMovies);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

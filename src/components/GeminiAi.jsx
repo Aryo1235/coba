@@ -1,44 +1,67 @@
 import { useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, HarmCategory } from "@google/generative-ai";
+import ReactMarkdown from "react-markdown"; // Import react-markdown
 
 function GeminiAi() {
   const [prompt, setPrompt] = useState("");
-  const [chatHistory, setChatHistory] = useState([]); // State untuk menyimpan history chat
+  const [chatHistory, setChatHistory] = useState([
+    // Contoh chat history yang sudah ada di file lama
+  ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!prompt.trim()) return; // Cegah pengiriman jika prompt kosong
+
     setLoading(true);
     setError(""); // Reset error sebelum API call
 
+    // Tambahkan pesan pengguna terlebih dahulu sebelum respons AI
+    setChatHistory((prevChatHistory) => [
+      ...prevChatHistory,
+      { role: "user", parts: [{ text: prompt }] }, // Input user ditambahkan ke chat history
+    ]);
+
+    let aiResponse = ""; // String untuk menyimpan respons yang diterima bertahap
+    const filmSpecificPrompt = ` Anda adalah ChnatBot AI yang berada di website FILMKU Yang berspesialisasi dalam film. Harap tanggapi hanya dengan informasi terkait film, termasuk detail seperti judul film, sutradara, aktor, rating, dan data serupa dan jika ia menanyakan kabarmu jawab dengan baik baik. Jika pertanyaan pengguna tidak berhubungan dengan film, tanggapi dengan pesan sopan yang menunjukkan bahwa saya hanya bisa menjawab pertanyaan tentang film.\n\nPermintaan pengguna: "${prompt}"`;
+
     try {
       const genAI = new GoogleGenerativeAI(
-        "AIzaSyAAmeNonOeqDm27E0_modFLcqHOesCmce4" // Gunakan API key yang benar
-      );
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const result = await model.generateContent(prompt);
+        "AIzaSyAAmeNonOeqDm27E0_modFLcqHOesCmce4"
+      ); // Ganti dengan API Key Anda
 
-      // Debugging: Log full response
-      console.log("Full API Response:", result);
+      const model = genAI.getGenerativeModel({
+        model: "gemini-pro",
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          },
+        ],
+        maxOutputTokens: 200,
+      });
+      const chat = model.startChat({ history: chatHistory }); // Mulai chat dengan model AI
+      const result = await chat.sendMessageStream(filmSpecificPrompt);
 
-      // Cek apakah respons adalah fungsi dan panggil text()
-      if (result && typeof result.response.text === "function") {
-        const aiResponse = result.response.text(); // Ambil teks dari fungsi
-        console.log("AI Response Text:", aiResponse); // Debug: Lihat teks dari AI
+      // Gunakan for await...of untuk membaca chunk streaming
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        aiResponse += chunkText; // Tambahkan teks dari chunk ke aiResponse
+      }
 
-        // Update chatHistory dengan pesan baru dari pengguna dan balasan AI
+      if (aiResponse) {
+        // Tambahkan respons AI ke chat history setelah respons penuh
         setChatHistory((prevChatHistory) => [
           ...prevChatHistory,
-          { userMessage: prompt, aiResponse }, // Tambahkan pesan dan balasan AI ke history
+          { role: "model", parts: [{ text: aiResponse }] }, // Respons AI
         ]);
-        setPrompt(""); // Kosongkan input setelah submit
-      } else {
-        setError("No valid response received");
       }
+
+      setPrompt(""); // Reset prompt setelah streaming selesai
     } catch (err) {
       console.error(err);
-      setError("An error occurred while generating content."); // Set error message
+      setError("An error occurred while generating content.");
     } finally {
       setLoading(false); // Set loading ke false setelah API call
     }
@@ -51,28 +74,33 @@ function GeminiAi() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-900">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-center text-yellow-500">
-          Gemini AI Chat
+      <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-4 text-center text-blue-500">
+          AI Baruchat
         </h1>
 
         {/* Chat Window */}
         <div className="flex flex-col space-y-4 h-60 overflow-y-auto border border-gray-300 rounded-lg p-4 mb-4">
           {chatHistory.length === 0 && !loading ? (
-            <p className="text-center text-gray-500">No messages yet.</p>
+            <p className="text-center text-gray-500">
+              Silahkan kirim pertanyaan tentang film!
+            </p>
           ) : (
             chatHistory.map((chat, index) => (
               <div key={index}>
-                <div className="text-right text-gray-700 whitespace-pre-wrap mb-2">
-                  <p className="bg-blue-100 p-2 rounded-lg inline-block">
-                    {chat.userMessage}
-                  </p>
-                </div>
-                <div className="text-left text-gray-700 whitespace-pre-wrap">
-                  <p className="bg-green-100 p-2 rounded-lg inline-block">
-                    {chat.aiResponse}
-                  </p>
-                </div>
+                {chat.role === "user" ? (
+                  <div className="text-right text-gray-700 whitespace-pre-wrap mb-2 break-words">
+                    <p className="bg-blue-200 p-2 rounded-lg inline-block max-w-full text-left break-words">
+                      {chat.parts[0].text}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="text-left text-gray-700 whitespace-pre-wrap">
+                    <div className="bg-green-200 p-2 rounded-lg inline-block">
+                      <ReactMarkdown>{chat.parts[0].text}</ReactMarkdown>
+                    </div>
+                  </div>
+                )}
               </div>
             ))
           )}
@@ -93,17 +121,18 @@ function GeminiAi() {
             type="text"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)} // Update prompt saat mengetik
-            placeholder="Enter your prompt here"
-            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            placeholder="Tulis pertanyaan Anda"
+            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading} // Disable input saat loading
           />
           <button
             type="submit"
             disabled={loading}
-            className={`bg-yellow-500 text-white py-2 px-4 rounded-lg w-full hover:bg-yellow-600 transition-all duration-300 ease-in-out ${
+            className={`bg-blue-500 text-white py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition-all duration-300 ease-in-out ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            {loading ? "Generating..." : "Generate"}
+            {loading ? "Generating..." : "Submit"}
           </button>
         </form>
 
