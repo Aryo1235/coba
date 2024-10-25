@@ -9,7 +9,6 @@ const apiLogin = import.meta.env.VITE_LOGIN;
 const fetchDataFromServer = async (url) => {
   try {
     const response = await axios.get(url);
-
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -147,6 +146,16 @@ const registerUser = async (username, password) => {
   }
 };
 
+const deleteUser = async (userId) => {
+  try {
+    const response = await axios.delete(`${apiLogin}/${userId}`); // Menggunakan userId dalam endpoint
+    return response.data; // Mengembalikan data respons jika berhasil
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error; // Menangani error di komponen pemanggil
+  }
+};
+
 // Fungsi untuk membuat token acak
 const generateRandomToken = () => {
   return Math.random().toString(36).substr(2);
@@ -172,4 +181,5 @@ export {
   login,
   updateUserProfile,
   registerUser,
+  deleteUser,
 };

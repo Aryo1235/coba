@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUserProfile } from "./api"; // Import the utility function
+import Notification from "./Notification"; // Import the Notification component
 
 const EditProfile = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [notification, setNotification] = useState({ message: "", type: "" });
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setErrorMessage("Kata sandi tidak cocok.");
-      setSuccessMessage("");
+      showNotification("Kata sandi tidak cocok.", "error");
       return;
     }
 
@@ -26,16 +25,18 @@ const EditProfile = () => {
       // Optionally update localStorage with the new username
       localStorage.setItem("username", updatedUser.username);
 
-      setSuccessMessage("Profil berhasil diperbarui!");
-      setErrorMessage("");
+      showNotification("Profil berhasil diperbarui!", "success");
       setTimeout(() => {
         navigate("/"); // Redirect after successful update
       }, 2000);
     } catch (error) {
-      setErrorMessage("Gagal memperbarui profil. Silakan coba lagi.");
-      setSuccessMessage("");
+      showNotification("Gagal memperbarui profil. Silakan coba lagi.", "error");
       console.error(error);
     }
+  };
+
+  const showNotification = (message, type) => {
+    setNotification({ message, type });
   };
 
   return (
@@ -88,16 +89,14 @@ const EditProfile = () => {
           Update Profile
         </button>
       </form>
-      {successMessage && (
-        <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-          {successMessage}
-        </div>
-      )}
 
-      {errorMessage && (
-        <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-          {errorMessage}
-        </div>
+      {/* Notification component to display success or error messages */}
+      {notification.message && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          clearMessage={() => setNotification({ message: "", type: "" })}
+        />
       )}
     </div>
   );
