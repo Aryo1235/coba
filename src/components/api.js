@@ -137,7 +137,7 @@ const registerUser = async (username, password) => {
     const response = await axios.post(apiLogin, {
       username: username,
       password: password, // Include password if changing it
-      generateRandomToken: generateRandomToken(),
+      token: generateRandomToken(),
     });
     return response.data; // Return the updated user data
   } catch (error) {
