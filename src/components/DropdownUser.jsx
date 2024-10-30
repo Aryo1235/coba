@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
-import { FavoritesContext } from "./FavoritesContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 import DeleteUser from "./Delete";
 import Notification from "./Notification";
 

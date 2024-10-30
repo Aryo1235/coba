@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "./api";
-import { FavoritesContext } from "./FavoritesContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Notification from "./Notification";
 

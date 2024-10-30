@@ -12,7 +12,7 @@ const DeleteUser = ({ showNotification }) => {
       localStorage.removeItem("username");
       localStorage.removeItem("userId");
       localStorage.removeItem("token");
-
+      localStorage.removeItem(`favorites_${userId}`);
       showNotification("User berhasil dihapus!", "success");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {

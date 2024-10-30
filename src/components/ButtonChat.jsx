@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { FavoritesContext } from "./FavoritesContext"; // Impor context
+import { FavoritesContext } from "../context/FavoritesContext"; // Impor context
 import { FaComments } from "react-icons/fa";
 const ButtonChat = () => {
   const navigate = useNavigate();

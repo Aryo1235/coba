@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getPopularMovies, getTopRatedMovies, getUpcomingMovies } from "./api"; // Import fungsi API
 import { GoogleGenerativeAI, HarmCategory } from "@google/generative-ai";
 import ReactMarkdown from "react-markdown"; // Import react-markdown
 
@@ -24,16 +25,47 @@ function GeminiAi() {
       { role: "user", parts: [{ text: prompt }] }, // Input user ditambahkan ke chat history
     ]);
 
-    let aiResponse = ""; // String untuk menyimpan respons yang diterima bertahap
-    const filmSpecificPrompt = ` Anda adalah ChnatBot AI yang berada di website FILMKU Yang berspesialisasi dalam film. Harap tanggapi hanya dengan informasi terkait film, termasuk detail seperti judul film, sutradara, aktor, rating, dan data serupa dan jika ia menanyakan kabarmu jawab dengan baik baik. Jika pertanyaan pengguna tidak berhubungan dengan film, tanggapi dengan pesan sopan yang menunjukkan bahwa saya hanya bisa menjawab pertanyaan tentang film.\n\nPermintaan pengguna: "${prompt}"`;
-
     try {
+      const username = localStorage.getItem("username");
+      // Ambil data film dari API sesuai dengan kebutuhan
+      const popularMovies = await getPopularMovies();
+      const topRatedMovies = await getTopRatedMovies();
+      const upcomingMovies = await getUpcomingMovies();
+
+      // Format data film ke dalam string
+      const popularMoviesInfo = popularMovies.results
+        .slice(0, 10)
+        .map(
+          (movie) =>
+            `Title: ${movie.title}, Rating: ${movie.vote_average} Sinopsis: ${movie.overview} Popularitas: ${movie.popularity} Tanggal Rilis:${movie.release_date}` // Tambahkan popularitas
+        )
+        .join("\n");
+
+      const topRatedMoviesInfo = topRatedMovies.results
+        .slice(0, 10)
+        .map(
+          (movie) =>
+            `Title: ${movie.title}, Rating: ${movie.vote_average} Sinopsis: ${movie.overview} Popularitas: ${movie.popularity} Tanggal Rilis:${movie.release_date}` // Tambahkan popularitas
+        )
+        .join("\n");
+
+      const upcomingMoviesInfo = upcomingMovies.results
+        .slice(0, 10)
+        .map(
+          (movie) =>
+            `Title: ${movie.title}, Rating: ${movie.vote_average} Sinopsis: ${movie.overview} Popularitas: ${movie.popularity} Tanggal Rilis:${movie.release_date}` // Tambahkan popularitas
+        )
+        .join("\n");
+
+      const filmSpecificPrompt = `Anda adalah ChatBot AI FILMKU spesialisasi dalam film.Nama Pengguna:"${username}" Pertanyaan pengguna: "${prompt}". Berikut adalah beberapa film populer:\n${popularMoviesInfo}\nDan beberapa film dengan rating tinggi:\n${topRatedMoviesInfo} \nDan beberapa film yang akan datang atau sedang tayang:\n${upcomingMoviesInfo}`;
+
       const genAI = new GoogleGenerativeAI(
         "AIzaSyAAmeNonOeqDm27E0_modFLcqHOesCmce4"
       ); // Ganti dengan API Key Anda
 
       const model = genAI.getGenerativeModel({
         model: "gemini-pro",
+        temperature: 0.7,
         safetySettings: [
           {
             category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
@@ -45,11 +77,11 @@ function GeminiAi() {
       const result = await chat.sendMessageStream(filmSpecificPrompt);
 
       // Gunakan for await...of untuk membaca chunk streaming
+      let aiResponse = ""; // String untuk menyimpan respons yang diterima bertahap
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
         aiResponse += chunkText; // Tambahkan teks dari chunk ke aiResponse
       }
-
       if (aiResponse) {
         // Tambahkan respons AI ke chat history setelah respons penuh
         setChatHistory((prevChatHistory) => [

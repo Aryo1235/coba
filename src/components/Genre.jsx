@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { getMoviesByGenre } from "./api";
 import { useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
-import { PaginationContext } from "./PaginationContext";
+import { PaginationContext } from "../context/PaginationContext";
 
 const Genre = ({ genreId, genreName }) => {
   const [movies, setMovies] = useState([]);

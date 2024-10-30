@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FavoritesContext } from "./FavoritesContext"; // Mengambil context dari FavoritesContext
+import { FavoritesContext } from "../context/FavoritesContext"; // Mengambil context dari FavoritesContext
 import { FaRegBookmark } from "react-icons/fa";
 import { useContext } from "react";
 

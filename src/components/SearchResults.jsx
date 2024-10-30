@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { searchMovies } from "./api";
 import MovieListSearch from "./MovieListSearch";
-import { PaginationContext } from "./PaginationContext"; // Import context
+import { PaginationContext } from "../context/PaginationContext"; // Import context
 import Pagination from "./Pagination";
 import { ClipLoader } from "react-spinners";
 
