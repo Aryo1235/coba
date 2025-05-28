@@ -17,7 +17,7 @@ function DetailPages() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false); // State untuk modal
-
+  const [userRating, setUserRating] = useState(null); // State untuk rating user
   useEffect(() => {
     setLoading(true);
     getMovieDetail(id)
@@ -28,8 +28,10 @@ function DetailPages() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  // Fungsi submit rating
   const handleRatingSubmit = (rating) => {
-    console.log("Submitted Rating:", rating);
+    setUserRating(rating); // simpan rating user di state
+    setModalOpen(false);
   };
 
   if (loading) return <p className="text-center">Loading...</p>;
@@ -46,7 +48,7 @@ function DetailPages() {
         <div className="flex flex-col mt-8 md:flex-col lg:flex-row items-center md:items-start lg:space-x-10">
           <MoviePoster movie={movie} />
           <div className="mt-4 lg:mt-0 lg:w-2/3">
-            <MovieInfo movie={movie} />
+            <MovieInfo movie={movie} userRating={userRating} />
             <MovieCredits movieId={id} />
             {/* Video Trailer */}
             <VideoTrailer movieId={id} />

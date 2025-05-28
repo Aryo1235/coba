@@ -15,6 +15,7 @@ const HeroSection = () => {
     getPopularMovies()
       .then((data) => {
         setMovies(data.results);
+        setCurrentIndex(0); // reset ke index awal
         setLoading(false);
       })
       .catch((error) => {
@@ -54,6 +55,9 @@ const HeroSection = () => {
   };
 
   const movie = movies[currentIndex];
+  if (!movie) {
+    return <div>Loading movie data...</div>; // atau bisa juga return null
+  }
   const { title, vote_average, release_date, backdrop_path, overview } = movie;
 
   return (
