@@ -9,7 +9,7 @@ function GeminiAi() {
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const api_gemini = import.meta.env.VITE_API_GEMINI; //lace with your actual API key
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -56,10 +56,10 @@ function GeminiAi() {
 
       const filmSpecificPrompt = `Anda adalah ChatBot AI FILMKU spesialisasi dalam film. Nama Pengguna: "${username}". Pertanyaan pengguna: "${prompt}". Berikut adalah beberapa film populer:\n${popularMoviesInfo}\nDan beberapa film dengan rating tinggi:\n${topRatedMoviesInfo}\nDan beberapa film yang akan datang atau sedang tayang:\n${upcomingMoviesInfo}`;
 
-      const genAI = new GoogleGenerativeAI("YOUR_API_KEY"); // Replace with your API Key
+      const genAI = new GoogleGenerativeAI(api_gemini); // Replace with your API Key
 
       const model = genAI.getGenerativeModel({
-        model: "gemini-pro",
+        model: "gemini-2.5-flash-preview-05-20",
         temperature: 0.7,
         safetySettings: [
           {
