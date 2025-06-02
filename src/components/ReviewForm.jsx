@@ -1,11 +1,16 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const ReviewForm = ({ onAddReview }) => {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
-
+  const isAuth = localStorage.getItem("token") ? true : false; // Cek apakah user sudah login
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
+    if (!isAuth) {
+      alert("Anda Harus Login Terlebih dahulu Untuk Review.");
+      navigate("/login");
+    }
     e.preventDefault();
 
     if (author.length <= 3) {

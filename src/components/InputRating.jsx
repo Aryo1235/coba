@@ -9,6 +9,7 @@ const RatingModal = ({ isOpen, onClose, onRatingSubmit }) => {
   };
 
   const handleSubmit = (event) => {
+    // Hapus pengecekan autentikasi dari handleSubmit di sini
     event.preventDefault();
     onRatingSubmit(rating);
     setRating(0); // Reset rating setelah submit

@@ -100,8 +100,8 @@ function GeminiAi() {
   return (
     <>
       <Navbar showSearch={false} />
-      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div className="bg-slate-900 bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg p-6 w-full max-w-md">
+      <div className="flex flex-col mt-20 items-center justify-center h-screen bg-gradient-to-t from-slate-800 to-slate-900 ">
+        <div className="bg-slate-900 bg-opacity-80 backdrop-blur-md rounded-lg  p-6 w-full max-w-md shadow-[0_0_20px_5px_rgba(253,224,71,0.8)]">
           <h1 className="text-3xl font-bold mb-4 text-center text-yellow-400">
             ObrolFilm
           </h1>

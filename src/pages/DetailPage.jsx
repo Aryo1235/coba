@@ -6,7 +6,7 @@ import MovieSuggest from "../components/MovieSuggest";
 import VideoTrailer from "../components/VideoTrailer";
 import MovieCredits from "../components/MovieCredits";
 import FavoriteButton from "../components/FavoriteButton";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieDetail } from "../components/api";
 import InputRating from "../components/InputRating"; // Import komponen modal
@@ -17,7 +17,9 @@ function DetailPages() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false); // State untuk modal
-  const [userRating, setUserRating] = useState(null); // State untuk rating user
+  const [userRating, setUserRating] = useState(null); // State untuk rating userht
+  const isAuth = localStorage.getItem("token") ? true : false; // Cek apakah user sudah login
+  const navigate = useNavigate();
   useEffect(() => {
     setLoading(true);
     getMovieDetail(id)
@@ -55,7 +57,19 @@ function DetailPages() {
             <div className="flex flex-row space-x-4">
               <FavoriteButton movie={movie} />
               <button
-                onClick={() => setModalOpen(true)} // Buka modal saat tombol diklik
+                onClick={() =>
+                {
+                  if (!isAuth) {
+                    alert("Please login to rate this movie.");
+                    navigate("/login");
+                 
+                  } else {
+                    // Jika user sudah login, buka modal rating
+                    setModalOpen(true);
+                  }
+}}
+                  
+                 
                 className="mt-8 px-4 py-1 bg-yellow-500 text-gray-900 rounded text-sm"
               >
                 Rate this Movie
